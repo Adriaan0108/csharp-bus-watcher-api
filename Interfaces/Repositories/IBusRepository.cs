@@ -4,9 +4,9 @@ namespace csharp_bus_watcher_api.Interfaces.Repositories;
 
 public interface IBusRepository
 {
-    Task<DeviceBus> CreateDeviceBus(DeviceBus deviceBus);
+    Task<Bus> GetBusById(int id);
 
-    Task<IEnumerable<DeviceBus>> GetDeviceBussesByDeviceId(int deviceId);
+    Task<IEnumerable<Bus>> GetBusesByDeviceId(int deviceId);
 
-    Task<DeviceBus> UpdateDeviceBus(DeviceBus deviceBus);
+    Task<IEnumerable<Bus>> GetAvailableBusesForDevice(int deviceId);
 }

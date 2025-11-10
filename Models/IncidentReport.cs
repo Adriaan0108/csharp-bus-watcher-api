@@ -18,5 +18,5 @@ public class IncidentReport : BaseModel
 
     public virtual Device CreatedByDevice { get; set; }
 
-    public virtual ICollection<IncidentReportFeedback> IncidentReportFeedbacks { get; set; }
+    //public virtual ICollection<IncidentReportFeedback> IncidentReportFeedbacks { get; set; }
 }

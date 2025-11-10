@@ -14,23 +14,40 @@ public class BusRepository : IBusRepository
         _context = context;
     }
 
-    public async Task<DeviceBus> CreateDeviceBus(DeviceBus deviceBus)
+    public async Task<IEnumerable<Bus>> GetBusesByDeviceId(int deviceId)
     {
-        await _context.DeviceBuses.AddAsync(deviceBus);
-        await _context.SaveChangesAsync();
-        return deviceBus;
+        return await _context.Buses
+        .Where(b => _context.DeviceBuses.Any(db => db.BusId == b.Id && db.DeviceId == deviceId))
+        .Include(b => b.Route)
+            .ThenInclude(r => r.OriginStop)
+        .Include(b => b.Route)
+            .ThenInclude(r => r.DestinationStop)
+        .AsSplitQuery()
+        .ToListAsync();
     }
 
-    public Task<DeviceBus> UpdateDeviceBus(DeviceBus deviceBus)
+    public async Task<IEnumerable<Bus>> GetAvailableBusesForDevice(int deviceId)
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<DeviceBus>> GetDeviceBussesByDeviceId(int deviceId)
-    {
-        return await _context.DeviceBuses.Where(d => d.DeviceId == deviceId)
-            .Include(db => db.Bus)
-            .ThenInclude(b => b.Route)
+        return await _context.Buses
+            .Where(b => !_context.DeviceBuses.Any(db => db.BusId == b.Id && db.DeviceId == deviceId))
+            .Include(b => b.Route)
+                .ThenInclude(r => r.OriginStop)
+            .Include(b => b.Route)
+                .ThenInclude(r => r.DestinationStop)
+            .AsSplitQuery()
             .ToListAsync();
+    }
+
+    public async Task<Bus> GetBusById(int id)
+    {
+        //return await _context.Buses.FindAsync(id);
+
+        return await _context.Buses
+        .Include(b => b.Route)
+            .ThenInclude(r => r.OriginStop)
+        .Include(b => b.Route)
+            .ThenInclude(r => r.DestinationStop)
+        .AsSplitQuery()
+        .FirstOrDefaultAsync(b => b.Id == id);
     }
 }

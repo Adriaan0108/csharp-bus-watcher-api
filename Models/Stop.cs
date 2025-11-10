@@ -14,7 +14,7 @@ public class Stop : BaseModel
 
     public virtual Area Area { get; set; }
 
-    public virtual ICollection<Route> RoutesAsOrigin { get; set; }
+    //public virtual ICollection<Route> RoutesAsOrigin { get; set; }
 
-    public virtual ICollection<Route> RoutesAsDestination { get; set; }
+    //public virtual ICollection<Route> RoutesAsDestination { get; set; }
 }

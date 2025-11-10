@@ -14,9 +14,9 @@ public class Device : BaseModel
 
     public bool NotificationsEnabled { get; set; }
 
-    public virtual ICollection<DeviceBus> DeviceBuses { get; set; }
+    // public virtual ICollection<DeviceBus> DeviceBuses { get; set; }
 
-    public virtual ICollection<IncidentReport> IncidentReports { get; set; }
+    //public virtual ICollection<IncidentReport> IncidentReports { get; set; }
 
-    public virtual ICollection<IncidentReportFeedback> IncidentReportFeedbacks { get; set; }
+    //public virtual ICollection<IncidentReportFeedback> IncidentReportFeedbacks { get; set; }
 }

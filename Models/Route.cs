@@ -14,5 +14,5 @@ public class Route : BaseModel
 
     public virtual Stop DestinationStop { get; set; }
 
-    public virtual ICollection<Bus> Buses { get; set; }
+    //public virtual ICollection<Bus> Buses { get; set; }
 }

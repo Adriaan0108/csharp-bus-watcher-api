@@ -1,4 +1,5 @@
 ﻿using csharp_bus_watcher_api.Dtos.DeviceBusDtos;
+using csharp_bus_watcher_api.Exceptions;
 using csharp_bus_watcher_api.Helpers;
 using csharp_bus_watcher_api.Interfaces.Repositories;
 using csharp_bus_watcher_api.Interfaces.Services;
@@ -28,10 +29,25 @@ public class DeviceBusService : IDeviceBusService
         if (existingDeviceBus == null)
         {
             var deviceBus = MappingProfile.ToDeviceBus(createDeviceBusDto);
+            deviceBus.DeviceId = device.Id;
 
             return await _deviceBusRepository.CreateDeviceBus(deviceBus);
         }
 
         return existingDeviceBus;
+    }
+
+    public async Task DeleteDeviceBus(int deviceBusId)
+    {
+        var deviceBus = await _deviceBusRepository.GetDeviceBus(deviceBusId);
+
+        if (deviceBus == null)
+        {
+            throw HttpExceptionFactory.NotFound($"No Bus Subscription found with Id {deviceBusId}.");
+        }
+
+        deviceBus.SetDeletedAt();
+
+        await _deviceBusRepository.UpdateDeviceBus(deviceBus);
     }
 }

@@ -26,4 +26,19 @@ public class DeviceBusRepository : IDeviceBusRepository
         return await _context.DeviceBuses.FirstOrDefaultAsync(d =>
             d.DeviceId == deviceId && d.BusId == busId && d.DeletedAt == null);
     }
+
+    public async Task<DeviceBus> GetDeviceBus(int deviceBusId)
+    {
+        //return await _context.DeviceBuses.FindAsync(deviceBusId);
+
+        return await _context.DeviceBuses
+           .Where(db => db.Id == deviceBusId && db.DeletedAt == null)
+           .FirstOrDefaultAsync();
+    }
+
+    public async Task UpdateDeviceBus(DeviceBus deviceBus)
+    {
+        _context.DeviceBuses.Update(deviceBus);
+        await _context.SaveChangesAsync();
+    }
 }

@@ -6,5 +6,5 @@ public class Area : BaseModel
 {
     public string Name { get; set; }
 
-    public virtual ICollection<Stop> Stops { get; set; }
+    //public virtual ICollection<Stop> Stops { get; set; }
 }

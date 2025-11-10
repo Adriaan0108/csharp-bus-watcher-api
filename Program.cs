@@ -39,6 +39,7 @@ builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceBusRepository, DeviceBusRepository>();
 
 builder.Services.AddScoped<IDeviceService, DeviceService>();
+builder.Services.AddScoped<IBusService, BusService>();
 builder.Services.AddScoped<IDeviceContextService, DeviceContextService>();
 builder.Services.AddScoped<IDeviceBusService, DeviceBusService>();
 

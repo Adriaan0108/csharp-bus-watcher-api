@@ -15,11 +15,19 @@ public class DeviceBusController : ControllerBase
         _deviceBusService = deviceBusService;
     }
 
-    [HttpPost]
+    [HttpPost("subscribe")]
     public async Task<IActionResult> CreateDeviceBus([FromBody] CreateDeviceBusDto createDeviceBusDto)
     {
         var response = await _deviceBusService.CreateDeviceBus(createDeviceBusDto);
 
         return Ok(response);
+    }
+
+    [HttpDelete("{id}/unsubscribe")]
+    public async Task<IActionResult> DeleteDeviceBus(int id)
+    {
+        await _deviceBusService.DeleteDeviceBus(id);
+
+        return NoContent();
     }
 }

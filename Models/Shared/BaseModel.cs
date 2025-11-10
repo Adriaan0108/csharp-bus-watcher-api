@@ -13,4 +13,9 @@ public class BaseModel
     public DateTime CreatedAt { get; set; } = DateTimeHelper.GetSouthAfricanTime();
 
     public DateTime? DeletedAt { get; set; }
+
+    public void SetDeletedAt()
+    {
+        DeletedAt = DateTimeHelper.GetSouthAfricanTime();
+    }
 }
