@@ -1,4 +1,5 @@
 ﻿using csharp_bus_watcher_api.Dtos.IncidentReportDtos;
+using csharp_bus_watcher_api.Dtos.NotificationDtos;
 using csharp_bus_watcher_api.Exceptions;
 using csharp_bus_watcher_api.Helpers;
 using csharp_bus_watcher_api.Interfaces.Repositories;
@@ -15,10 +16,18 @@ namespace csharp_bus_watcher_api.Services
 
         private readonly IDeviceContextService _deviceContextService;
 
-        public IncidentReportService(IIncidentReportRepository incidentReportRepository, IDeviceContextService deviceContextService)
+        private readonly INotificationService _notificationService;
+
+        private readonly IDeviceRepository _deviceRepository;
+
+        public IncidentReportService(IIncidentReportRepository incidentReportRepository, IBusRepository busRepository,
+            IDeviceContextService deviceContextService, INotificationService notificationService, IDeviceRepository deviceRepository)
         {
             _incidentReportRepository = incidentReportRepository;
+            _busRepository = busRepository;
             _deviceContextService = deviceContextService;
+            _notificationService = notificationService;
+            _deviceRepository = deviceRepository;
         }
 
         public async Task<IncidentReport> CreateIncidentReport(CreateIncidentReportDto createIncidentReportDto)
@@ -44,7 +53,11 @@ namespace csharp_bus_watcher_api.Services
             var report = MappingProfile.ToIncidentReport(createIncidentReportDto);
             report.CreatedByDeviceId = device.Id;
 
-            return await _incidentReportRepository.CreateIncidentReport(report);
+            var createdReport = await _incidentReportRepository.CreateIncidentReport(report);
+
+            await SendIncidentReportNotifications(createdReport, device.Id);
+
+            return createdReport;
         }
 
         public async Task<IEnumerable<IncidentReport>> GetIncidentReports(DateTime? startDate, DateTime? endDate)
@@ -56,7 +69,7 @@ namespace csharp_bus_watcher_api.Services
                 DateTimeHelper.ValidateDates(startDate.Value, endDate.Value);
             }
 
-            return await _incidentReportRepository.GetIncidentReports(device.Id, startDate.Value, endDate.Value);
+            return await _incidentReportRepository.GetIncidentReports(device.Id, startDate, endDate);
         }
 
         public async Task<IncidentReport> GetReportById(int id)
@@ -69,6 +82,44 @@ namespace csharp_bus_watcher_api.Services
             }
 
             return report;
+        }
+
+        private async Task SendIncidentReportNotifications(IncidentReport report, int createdByDeviceId)
+        {
+            // Get all devices subscribed to this bus
+            var subscribedDevices = await _deviceRepository.GetDevicesSubscribedToBus(report.BusId);
+
+            // Filter devices: notifications enabled, not deleted, and exclude the creating device
+            var devicesToNotify = subscribedDevices
+                .Where(d => d.NotificationsEnabled &&
+                           d.DeletedAt == null &&
+                           d.Id != createdByDeviceId)
+                .ToList();
+
+            if (!devicesToNotify.Any())
+            {
+                return;
+            }
+
+            // Get device tokens for push notifications
+            var deviceTokens = devicesToNotify
+                .Select(d => d.ExpoPushToken)
+                .Where(token => !string.IsNullOrEmpty(token))
+                .ToList();
+
+            if (!deviceTokens.Any())
+            {
+                return;
+            }
+
+            var notificationDto = new SendNotificationsDto
+            {
+                PushTo = deviceTokens,
+                PushTitle = "Incident Report",
+                PushBody = $"A new incident has been reported for bus {report.Bus.Route.Name}.",
+            };
+
+            await _notificationService.SendPushNotifications(notificationDto);
         }
     }
 }

@@ -4,6 +4,7 @@ using csharp_bus_watcher_api.Interfaces.Services;
 using csharp_bus_watcher_api.Middleware;
 using csharp_bus_watcher_api.Repositories;
 using csharp_bus_watcher_api.Services;
+using Expo.Server.Client;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddSingleton<PushApiClient>();
+
 builder.Services.AddScoped<IBusRepository, BusRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceBusRepository, DeviceBusRepository>();
@@ -44,6 +47,7 @@ builder.Services.AddScoped<IBusService, BusService>();
 builder.Services.AddScoped<IDeviceContextService, DeviceContextService>();
 builder.Services.AddScoped<IDeviceBusService, DeviceBusService>();
 builder.Services.AddScoped<IIncidentReportService, IncidentReportService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 var app = builder.Build();
 

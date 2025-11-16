@@ -13,4 +13,6 @@ public interface IDeviceRepository
     Task<Device> GetDeviceByToken(string token);
 
     Task<Device> GetDeviceByHardwareId(string hardwareId);
+
+    Task<IEnumerable<Device>> GetDevicesSubscribedToBus(int busId);
 }

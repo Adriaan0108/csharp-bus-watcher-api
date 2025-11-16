@@ -42,4 +42,12 @@ public class DeviceRepository : IDeviceRepository
     {
         return await _context.Devices.FirstOrDefaultAsync(d => d.HardwareId == hardwareId && d.DeletedAt == null);
     }
+
+    public async Task<IEnumerable<Device>> GetDevicesSubscribedToBus(int busId)
+    {
+        return await _context.Devices
+            .Where(d => _context.DeviceBuses.Any(db => db.DeviceId == d.Id && db.BusId == busId && db.DeletedAt == null))
+            .AsSplitQuery()
+            .ToListAsync();
+    }
 }
