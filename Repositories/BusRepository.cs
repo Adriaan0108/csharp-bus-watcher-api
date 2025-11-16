@@ -17,7 +17,7 @@ public class BusRepository : IBusRepository
     public async Task<IEnumerable<Bus>> GetBusesByDeviceId(int deviceId)
     {
         return await _context.Buses
-        .Where(b => _context.DeviceBuses.Any(db => db.BusId == b.Id && db.DeviceId == deviceId))
+        .Where(b => _context.DeviceBuses.Any(db => db.BusId == b.Id && db.DeviceId == deviceId && db.DeletedAt == null))
         .Include(b => b.Route)
             .ThenInclude(r => r.OriginStop)
         .Include(b => b.Route)
@@ -29,7 +29,7 @@ public class BusRepository : IBusRepository
     public async Task<IEnumerable<Bus>> GetAvailableBusesForDevice(int deviceId)
     {
         return await _context.Buses
-            .Where(b => !_context.DeviceBuses.Any(db => db.BusId == b.Id && db.DeviceId == deviceId))
+            .Where(b => !_context.DeviceBuses.Any(db => db.BusId == b.Id && db.DeviceId == deviceId && db.DeletedAt == null))
             .Include(b => b.Route)
                 .ThenInclude(r => r.OriginStop)
             .Include(b => b.Route)
@@ -49,5 +49,16 @@ public class BusRepository : IBusRepository
             .ThenInclude(r => r.DestinationStop)
         .AsSplitQuery()
         .FirstOrDefaultAsync(b => b.Id == id);
+    }
+
+    public async Task<IEnumerable<Bus>> GetAllBuses()
+    {
+        return await _context.Buses
+        .Include(b => b.Route)
+            .ThenInclude(r => r.OriginStop)
+        .Include(b => b.Route)
+            .ThenInclude(r => r.DestinationStop)
+        .AsSplitQuery()
+        .ToListAsync();
     }
 }

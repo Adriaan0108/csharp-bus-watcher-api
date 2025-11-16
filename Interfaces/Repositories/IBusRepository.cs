@@ -6,7 +6,9 @@ public interface IBusRepository
 {
     Task<Bus> GetBusById(int id);
 
+    Task<IEnumerable<Bus>> GetAvailableBusesForDevice(int deviceId);
+
     Task<IEnumerable<Bus>> GetBusesByDeviceId(int deviceId);
 
-    Task<IEnumerable<Bus>> GetAvailableBusesForDevice(int deviceId);
+    Task<IEnumerable<Bus>> GetAllBuses();
 }

@@ -17,15 +17,6 @@ namespace csharp_bus_watcher_api.Services
             _busRepository = busRepository;
         }
 
-        public async Task<IEnumerable<Bus>> GetAvailableBusesForDeviceId()
-        {
-            var device = await _deviceContextService.GetDevice();
-
-            var buses = await _busRepository.GetAvailableBusesForDevice(device.Id);
-
-            return buses;
-        }
-
         public async Task<Bus> GetBusById(int id)
         {
             var bus = await _busRepository.GetBusById(id);
@@ -38,13 +29,18 @@ namespace csharp_bus_watcher_api.Services
             return bus;
         }
 
-        public async Task<IEnumerable<Bus>> GetBusesByDeviceId()
+        public async Task<IEnumerable<Bus>> GetBusesByDeviceId(bool? subscribed = null)
         {
             var device = await _deviceContextService.GetDevice();
 
-            var buses = await _busRepository.GetBusesByDeviceId(device.Id);
+            return subscribed switch
+            {
+                true => await _busRepository.GetBusesByDeviceId(device.Id),
 
-            return buses;
+                false => await _busRepository.GetAvailableBusesForDevice(device.Id),
+
+                null => await _busRepository.GetAllBuses()
+            };
         }
     }
 }

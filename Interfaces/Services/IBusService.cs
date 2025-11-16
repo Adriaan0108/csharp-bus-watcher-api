@@ -6,7 +6,5 @@ public interface IBusService
 {
     Task<Bus> GetBusById(int id);
 
-    Task<IEnumerable<Bus>> GetBusesByDeviceId();
-
-    Task<IEnumerable<Bus>> GetAvailableBusesForDeviceId();
+    Task<IEnumerable<Bus>> GetBusesByDeviceId(bool? subscribed = null);
 }

@@ -1,4 +1,5 @@
-﻿using csharp_bus_watcher_api.Interfaces.Services;
+﻿using csharp_bus_watcher_api.Dtos.DeviceBusDtos;
+using csharp_bus_watcher_api.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace csharp_bus_watcher_api.Controllers
@@ -9,15 +10,18 @@ namespace csharp_bus_watcher_api.Controllers
     {
         private readonly IBusService _busService;
 
-        public BusController(IBusService busService)
+        private readonly IDeviceBusService _deviceBusService;
+
+        public BusController(IBusService busService, IDeviceBusService deviceBusService)
         {
             _busService = busService;
+            _deviceBusService = deviceBusService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBusesByDeviceId()
+        public async Task<IActionResult> GetBusesByDeviceId([FromQuery] bool? subscribed = null)
         {
-            var response = await _busService.GetBusesByDeviceId();
+            var response = await _busService.GetBusesByDeviceId(subscribed);
 
             return Ok(response);
         }
@@ -30,12 +34,20 @@ namespace csharp_bus_watcher_api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("available")]
-        public async Task<IActionResult> GetAvailableBusesForDeviceId()
+        [HttpPost("subscribe")]
+        public async Task<IActionResult> CreateDeviceBus([FromBody] CreateDeviceBusDto createDeviceBusDto)
         {
-            var response = await _busService.GetAvailableBusesForDeviceId();
+            var response = await _deviceBusService.CreateDeviceBus(createDeviceBusDto);
 
             return Ok(response);
+        }
+
+        [HttpDelete("{id}/unsubscribe")]
+        public async Task<IActionResult> DeleteDeviceBus(int id)
+        {
+            await _deviceBusService.DeleteDeviceBus(id);
+
+            return NoContent();
         }
     }
 }

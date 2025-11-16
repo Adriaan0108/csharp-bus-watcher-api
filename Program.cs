@@ -37,11 +37,13 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IBusRepository, BusRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceBusRepository, DeviceBusRepository>();
+builder.Services.AddScoped<IIncidentReportRepository, IncidentReportRepository>();
 
 builder.Services.AddScoped<IDeviceService, DeviceService>();
 builder.Services.AddScoped<IBusService, BusService>();
 builder.Services.AddScoped<IDeviceContextService, DeviceContextService>();
 builder.Services.AddScoped<IDeviceBusService, DeviceBusService>();
+builder.Services.AddScoped<IIncidentReportService, IncidentReportService>();
 
 var app = builder.Build();
 

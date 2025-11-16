@@ -1,5 +1,6 @@
 ﻿using csharp_bus_watcher_api.Dtos.DeviceBusDtos;
 using csharp_bus_watcher_api.Dtos.DeviceDtos;
+using csharp_bus_watcher_api.Dtos.IncidentReportDtos;
 using csharp_bus_watcher_api.Models;
 using Riok.Mapperly.Abstractions;
 
@@ -11,4 +12,6 @@ public static partial class MappingProfile
     public static partial Device ToDevice(CreateDeviceDto createDeviceDto);
 
     public static partial DeviceBus ToDeviceBus(CreateDeviceBusDto createDeviceBusDto);
+
+    public static partial IncidentReport ToIncidentReport(CreateIncidentReportDto createIncidentReportDto);
 }
