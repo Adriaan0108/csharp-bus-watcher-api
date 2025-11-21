@@ -14,7 +14,7 @@ public class Bus : BaseModel
 
     // public virtual ICollection<DeviceBus> DeviceBuses { get; set; }
 
-    public virtual Route Route { get; set; }
+    public virtual BusRoute Route { get; set; }
 
     //public virtual ICollection<IncidentReport> IncidentReports { get; set; }
 }

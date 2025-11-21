@@ -1,4 +1,5 @@
-﻿using csharp_bus_watcher_api.Models;
+﻿using csharp_bus_watcher_api.Dtos.BusDtos;
+using csharp_bus_watcher_api.Models;
 
 namespace csharp_bus_watcher_api.Interfaces.Services;
 
@@ -7,4 +8,6 @@ public interface IBusService
     Task<Bus> GetBusById(int id);
 
     Task<IEnumerable<Bus>> GetBusesByDeviceId(bool? subscribed = null);
+
+    Task<IEnumerable<BusResponseDto>> GetBusesByRouteId(int routeId);
 }

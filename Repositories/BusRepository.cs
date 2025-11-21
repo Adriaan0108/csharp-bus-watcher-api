@@ -61,4 +61,9 @@ public class BusRepository : IBusRepository
         .AsSplitQuery()
         .ToListAsync();
     }
+
+    public async Task<IEnumerable<Bus>> GetBusesByRouteId(int routeId)
+    {
+        return await _context.Buses.Where(b => b.RouteId == routeId).ToListAsync();
+    }
 }

@@ -1,4 +1,5 @@
-﻿using csharp_bus_watcher_api.Dtos.DeviceBusDtos;
+﻿using csharp_bus_watcher_api.Dtos.BusDtos;
+using csharp_bus_watcher_api.Dtos.DeviceBusDtos;
 using csharp_bus_watcher_api.Dtos.DeviceDtos;
 using csharp_bus_watcher_api.Dtos.IncidentReportDtos;
 using csharp_bus_watcher_api.Dtos.NotificationDtos;
@@ -18,4 +19,6 @@ public static partial class MappingProfile
     public static partial IncidentReport ToIncidentReport(CreateIncidentReportDto createIncidentReportDto);
 
     public static partial PushTicketRequest ToPushTicketRequest(SendNotificationsDto sendNotificationsDto);
+
+    public static partial IEnumerable<BusResponseDto> ToBusResponseDtos(IEnumerable<Bus> buses);
 }

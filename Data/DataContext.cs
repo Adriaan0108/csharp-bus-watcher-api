@@ -1,6 +1,5 @@
 ﻿using csharp_bus_watcher_api.Models;
 using Microsoft.EntityFrameworkCore;
-using Route = csharp_bus_watcher_api.Models.Route; // prevent ambiguous .NET naming
 
 namespace csharp_bus_watcher_api.Data;
 
@@ -20,7 +19,7 @@ public class DataContext : DbContext
 
     public DbSet<IncidentReportFeedback> IncidentReportFeedbacks { get; set; }
 
-    public DbSet<Route> Routes { get; set; }
+    public DbSet<BusRoute> Routes { get; set; }
 
     public DbSet<Stop> Stops { get; set; }
 
@@ -53,7 +52,7 @@ public class DataContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
         // Route -> OriginStop (Many-to-One)
-        modelBuilder.Entity<Route>()
+        modelBuilder.Entity<BusRoute>()
             .HasOne(r => r.OriginStop)
             //.WithMany(s => s.RoutesAsOrigin)
             .WithMany()
@@ -61,7 +60,7 @@ public class DataContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
         // Route -> DestinationStop (Many-to-One)  
-        modelBuilder.Entity<Route>()
+        modelBuilder.Entity<BusRoute>()
             .HasOne(r => r.DestinationStop)
             //.WithMany(s => s.RoutesAsDestination)
             .WithMany()

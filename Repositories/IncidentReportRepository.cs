@@ -53,7 +53,7 @@ namespace csharp_bus_watcher_api.Repositories
 
             return await _context.IncidentReports
                 .Include(r => r.Bus)
-                .Include(r => r.Bus.Route) // If Bus has a direct Route navigation property
+                .Include(r => r.Bus.Route)
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
     }

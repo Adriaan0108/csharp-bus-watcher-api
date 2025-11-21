@@ -1,8 +1,9 @@
 ﻿using csharp_bus_watcher_api.Models.Shared;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace csharp_bus_watcher_api.Models;
 
-public class Route : BaseModel
+public class BusRoute : BaseModel
 {
     public string Name { get; set; }
 
