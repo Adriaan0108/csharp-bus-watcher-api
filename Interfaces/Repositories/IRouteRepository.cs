@@ -4,6 +4,6 @@ namespace csharp_bus_watcher_api.Interfaces.Repositories
 {
     public interface IRouteRepository
     {
-        Task<IEnumerable<BusRoute>> GetRoutes();
+        Task<IEnumerable<BusRoute>> GetRoutes(string? search = null);
     }
 }

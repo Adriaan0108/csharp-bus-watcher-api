@@ -48,7 +48,7 @@ namespace csharp_bus_watcher_api.Services
                 throw HttpExceptionFactory.BadRequest("Cannot create incident report for bus that departed 4 or more hours ago.");
             }
 
-            //also check for next buses depart time, cant report when next bus should be on its way, or reports disappear after next bus depart time
+            var nextBus = await _busRepository.GetNextBus(bus);
 
             var report = MappingProfile.ToIncidentReport(createIncidentReportDto);
             report.CreatedByDeviceId = device.Id;

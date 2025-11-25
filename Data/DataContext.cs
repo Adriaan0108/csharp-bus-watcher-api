@@ -107,6 +107,9 @@ public class DataContext : DbContext
             .HasForeignKey(ir => ir.BusId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<IncidentReport>()
+            .Ignore(ir => ir.CreatedByDevice); // dont populate CreatedByDevice
+
         base.OnModelCreating(modelBuilder);
     }
 }

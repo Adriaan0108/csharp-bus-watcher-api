@@ -18,9 +18,9 @@ namespace csharp_bus_watcher_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetRoutes()
+        public async Task<IActionResult> GetRoutes([FromQuery] string? search = null)
         {
-            var response = await _routeService.GetRoutes();
+            var response = await _routeService.GetRoutes(search);
 
             return Ok(response);
         }

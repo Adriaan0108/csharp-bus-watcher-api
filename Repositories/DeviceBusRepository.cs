@@ -49,4 +49,11 @@ public class DeviceBusRepository : IDeviceBusRepository
         _context.DeviceBuses.Update(deviceBus);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<DeviceBus>> GetBusesByDeviceId(int deviceId)
+    {
+        return await _context.DeviceBuses
+            .Where(db => db.DeviceId == deviceId && db.DeletedAt == null)
+            .ToListAsync();
+    }
 }

@@ -14,12 +14,25 @@ namespace csharp_bus_watcher_api.Repositories
             _context = dataContext;
         }
 
-        public async Task<IEnumerable<BusRoute>> GetRoutes()
+        public async Task<IEnumerable<BusRoute>> GetRoutes(string? search = null)
         {
-            return await _context.Routes
-                .Include(r => r.OriginStop)
-                .Include(r => r.DestinationStop)
-                .ToListAsync();
+            //return await _context.Routes
+            //    .Include(r => r.OriginStop)
+            //    .Include(r => r.DestinationStop)
+            //    .ToListAsync();
+
+            var query = _context.Routes
+               .Include(r => r.OriginStop)
+               .Include(r => r.DestinationStop)
+               .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var lowerSearch = search.ToLower();
+                query = query.Where(r => r.Name.ToLower().Contains(lowerSearch));
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

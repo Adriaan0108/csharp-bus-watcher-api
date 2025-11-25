@@ -66,4 +66,14 @@ public class BusRepository : IBusRepository
     {
         return await _context.Buses.Where(b => b.RouteId == routeId).ToListAsync();
     }
+
+    public async Task<Bus> GetNextBus(Bus currentBus)
+    {
+        return await _context.Buses
+            .Where(b => b.RouteId == currentBus.RouteId
+                        && b.Direction == currentBus.Direction
+                        && b.DepartTime > currentBus.DepartTime)
+            .OrderBy(b => b.DepartTime)
+            .FirstOrDefaultAsync();
+    }
 }
