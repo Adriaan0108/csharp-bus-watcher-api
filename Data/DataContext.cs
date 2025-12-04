@@ -27,13 +27,17 @@ public class DataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Explicitly set Id as the primary key
+        modelBuilder.Entity<DeviceBus>()
+            .HasKey(db => db.Id);
+
         // Device -> DeviceBus (One-to-Many)
         modelBuilder.Entity<DeviceBus>()
-        .HasOne(db => db.Device)
-        //.WithMany(d => d.DeviceBuses)
-        .WithMany()
-        .HasForeignKey(db => db.DeviceId)
-        .OnDelete(DeleteBehavior.Restrict); // Prevent device deletion if linked to buses
+            .HasOne(db => db.Device)
+            //.WithMany(d => d.DeviceBuses)
+            .WithMany()
+            .HasForeignKey(db => db.DeviceId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent device deletion if linked to buses
 
         // Bus -> DeviceBus (One-to-Many)
         modelBuilder.Entity<DeviceBus>()
