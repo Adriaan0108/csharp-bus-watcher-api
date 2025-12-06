@@ -12,6 +12,10 @@ public interface IDeviceBusRepository
 
     Task<IEnumerable<int>> GetBusIdsByDeviceId(int deviceId);
 
+    Task<IEnumerable<int>> GetAvailableBusIdsByDeviceId(int deviceId);
+
+    Task<IEnumerable<int>> GetAllBusIds();
+
     Task<IEnumerable<DeviceBus>> GetBusesByDeviceId(int deviceId);
 
     Task UpdateDeviceBus(DeviceBus deviceBus);

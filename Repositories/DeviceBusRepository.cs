@@ -44,6 +44,22 @@ public class DeviceBusRepository : IDeviceBusRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<int>> GetAvailableBusIdsByDeviceId(int deviceId)
+    {
+        return await _context.DeviceBuses
+            .Where(db => db.DeviceId != deviceId && db.DeletedAt == null)
+            .Select(db => db.BusId)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<int>> GetAllBusIds()
+    {
+        return await _context.DeviceBuses
+            .Where(db => db.DeletedAt == null)
+            .Select(db => db.BusId)
+            .ToListAsync();
+    }
+
     public async Task UpdateDeviceBus(DeviceBus deviceBus)
     {
         _context.DeviceBuses.Update(deviceBus);

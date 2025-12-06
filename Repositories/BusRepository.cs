@@ -76,4 +76,11 @@ public class BusRepository : IBusRepository
             .OrderBy(b => b.DepartTime)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<IEnumerable<Bus>> GetBusesByRouteIds(List<int> routeIds)
+    {
+        return await _context.Buses
+                       .Where(b => routeIds.Contains(b.RouteId))
+                       .ToListAsync();
+    }
 }

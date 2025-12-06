@@ -5,6 +5,6 @@ namespace csharp_bus_watcher_api.Interfaces.Services
 {
     public interface IRouteService
     {
-        Task<IEnumerable<RouteResponseDto>> GetRoutes(string? search = null);
+        Task<IEnumerable<RouteResponseDto>> GetRoutes(string? search = null, bool? subscribed = null);
     }
 }

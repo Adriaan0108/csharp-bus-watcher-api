@@ -14,5 +14,7 @@ public interface IBusRepository
 
     Task<IEnumerable<Bus>> GetBusesByRouteId(int routeId);
 
+    Task<IEnumerable<Bus>> GetBusesByRouteIds(List<int> routeIds);
+
     Task<Bus> GetNextBus(Bus currentBus);
 }
